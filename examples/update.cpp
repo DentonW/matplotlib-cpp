@@ -24,9 +24,9 @@ int main()
     std::vector<double> x, y;
 
     const double w = 0.05;
-    const double a = n/2;
+    const double a = n/2.0;
 
-    for (size_t i=0; i<n; i++) {
+    for (int i=0; i<n; i++) {
         x.push_back(i);
         y.push_back(a*sin(w*i));
     }

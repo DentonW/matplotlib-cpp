@@ -10,7 +10,7 @@ int main()
     double theta, r;
     double z_inc = 4.0/99.0; double theta_inc = (8.0 * M_PI)/99.0;
     
-    for (double i = 0; i < 100; i += 1) {
+    for (int i = 0; i < 100; i += 1) {
         theta = -4.0 * M_PI + theta_inc*i;
         z.push_back(-2.0 + z_inc*i);
         r = z[i]*z[i] + 1;

@@ -7,7 +7,14 @@
 
 // Python headers must be included before any system headers, since
 // they define _POSIX_C_SOURCE
-#include <Python.h>
+#if defined(_WIN32) && defined(_DEBUG)
+    // Python.h will try to load the library debug version, but that is not installed by default.
+    #undef _DEBUG
+        #include <Python.h>
+    #define _DEBUG
+#else
+    #include <Python.h>
+#endif
 
 #include <vector>
 #include <map>
@@ -282,7 +289,7 @@ private:
         s_python_function_colorbar = PyObject_GetAttrString(pymod, "colorbar");
         s_python_function_subplots_adjust = safe_import(pymod,"subplots_adjust");
         s_python_function_rcparams = PyObject_GetAttrString(pymod, "rcParams");
-	s_python_function_spy = PyObject_GetAttrString(pymod, "spy");
+    s_python_function_spy = PyObject_GetAttrString(pymod, "spy");
 #ifndef WITHOUT_NUMPY
         s_python_function_imshow = safe_import(pymod, "imshow");
 #endif
@@ -1277,7 +1284,7 @@ bool bar(const std::vector<Numeric> &               y,
   detail::_interpreter::get();
 
   std::vector<T> x;
-  for (std::size_t i = 0; i < y.size(); i++) { x.push_back(i); }
+  for (std::size_t i = 0; i < y.size(); i++) { x.push_back(static_cast<T>(i)); }
 
   return bar(x, y, ec, ls, lw, keywords);
 }
@@ -2825,7 +2832,7 @@ struct plot_impl<std::false_type>
         PyObject* pystring = PyString_FromString(format.c_str());
 
         auto itx = begin(x), ity = begin(y);
-        for(size_t i = 0; i < xs; ++i) {
+        for(int i = 0; i < xs; ++i) {
             PyList_SetItem(xlist, i, PyFloat_FromDouble(*itx++));
             PyList_SetItem(ylist, i, PyFloat_FromDouble(*ity++));
         }

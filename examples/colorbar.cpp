@@ -13,7 +13,7 @@ int main()
     std::vector<float> z(ncols * nrows);
     for (int j=0; j<nrows; ++j) {
         for (int i=0; i<ncols; ++i) {
-            z.at(ncols * j + i) = std::sin(std::hypot(i - ncols/2, j - nrows/2));
+            z.at(ncols * j + i) = static_cast<float>(std::sin(std::hypot(i - ncols/2, j - nrows/2)));
         }
     }
 
